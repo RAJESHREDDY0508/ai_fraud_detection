@@ -1,0 +1,18 @@
+# Data files (Too large for GitHub)
+data/*.csv
+data/*.pkl
+data/*.parquet
+
+# Environments
+.venv/
+venv/
+env/
+
+# Python internals
+__pycache__/
+*.pyc
+
+# IDE Settings
+.idea/
+.vscode/
+.project

@@ -1,0 +1,16 @@
+# Data Processing & Utilities
+pandas
+numpy
+joblib
+
+# Machine Learning
+scikit-learn
+lightgbm
+
+# Streaming & Messaging
+# Using -ng for better compatibility with Python 3.12+
+kafka-python-ng
+six
+
+# Optional: Fast Parquet if you decide to use Parquet instead of CSV
+pyarrow
