@@ -1,7 +1,6 @@
 import numpy as np
 import lightgbm as lgb
-from feature_extraction import extract_features
-
+from .feature_extraction import extract_features
 import os
 
 BASE_DIR = os.path.dirname(__file__)

@@ -1,39 +1,39 @@
-from kafka import KafkaConsumer
 import json
-
-from risk_scoring import get_risk_score
-from decision_engine import make_decision
-
-
-# Create Kafka consumer
-consumer = KafkaConsumer(
-    "transactions",
-    bootstrap_servers="localhost:9092",
-    value_deserializer=lambda v: json.loads(v.decode("utf-8")),
-    auto_offset_reset="earliest",
-    enable_auto_commit=True
-)
-
-print("Fraud detection service started...")
-print("Waiting for transactions...\n")
+from kafka import KafkaConsumer
+from .risk_scoring import get_risk_score
+from .decision_engine import make_decision
 
 
-# Continuously listen for transactions
-for message in consumer:
+def start_processing():
+    consumer = KafkaConsumer(
+        "transactions",
+        bootstrap_servers="localhost:9092",
+        value_deserializer=lambda v: json.loads(v.decode("utf-8")),
+        auto_offset_reset="latest"
+    )
 
-    txn = message.value
+    print("🚀 Real-time Processing Engine Active...")
 
-    try:
-        # Get fraud risk score
-        score = get_risk_score(txn)
+    for message in consumer:
+        txn = message.value
+        try:
+            score = get_risk_score(txn)
+            decision = make_decision(score)
 
-        # Apply decision logic
-        decision = make_decision(score)
+            # Log results
+            result = {
+                "amount": txn['Amount'],
+                "score": round(float(score), 4),
+                "decision": decision
+            }
+            print(f"Processed: {result}")
 
-        print(
-            f"Amount: {txn['Amount']} | Risk Score: {score:.4f} | Decision: {decision}"
-        )
+            # TODO: In a full stack app, you would send 'result'
+            # to a database or a WebSocket here.
 
-    except Exception as e:
+        except Exception as e:
+            print(f"Error: {e}")
 
-        print("Error processing transaction:", e)
+
+if __name__ == "__main__":
+    start_processing()
